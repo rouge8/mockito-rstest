@@ -50,7 +50,9 @@ mod tests {
             .create_async()
             .await;
 
-        let resp = reqwest::get(format!("{}/foo", server.url())).await.unwrap();
+        let resp = reqwest::get(format!("{}/foo", my_struct.url))
+            .await
+            .unwrap();
         assert_eq!(resp.status(), 200);
     }
 }
