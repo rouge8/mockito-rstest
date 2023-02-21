@@ -31,15 +31,9 @@ mod tests {
 
     #[rstest]
     #[tokio::test]
-    async fn test_it(
-        #[future] server: mockito::ServerGuard,
-        #[future] server_url: String,
-        #[future] my_struct: MyStruct,
-    ) {
+    async fn test_it(#[future] server: mockito::ServerGuard, #[future] my_struct: MyStruct) {
         let mut server = server.await;
         let my_struct = my_struct.await;
-
-        assert_eq!(server_url.await, my_struct.url);
 
         assert_eq!(server.url(), my_struct.url);
 
