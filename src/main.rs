@@ -13,25 +13,20 @@ mod tests {
     use super::*;
 
     #[fixture]
-    async fn server() -> mockito::ServerGuard {
-        mockito::Server::new_async().await
+    async fn server() -> mockito::Server {
+        mockito::Server::new_with_port_async(0).await
     }
 
     #[fixture]
-    async fn server_url(#[future] server: mockito::ServerGuard) -> String {
-        server.await.url()
-    }
-
-    #[fixture]
-    async fn my_struct(#[future] server_url: String) -> MyStruct {
+    async fn my_struct(#[future] server: mockito::Server) -> MyStruct {
         return MyStruct {
-            url: server_url.await,
+            url: server.await.url(),
         };
     }
 
     #[rstest]
     #[tokio::test]
-    async fn test_it(#[future] server: mockito::ServerGuard, #[future] my_struct: MyStruct) {
+    async fn test_it(#[future] server: mockito::Server, #[future] my_struct: MyStruct) {
         let mut server = server.await;
         let my_struct = my_struct.await;
 
